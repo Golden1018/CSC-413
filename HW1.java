@@ -8,15 +8,15 @@ interface ListInterface<E> {
 
     boolean add(int newPosition, E newEntry);
 
-    E remove(int givenPosition);
+    Comparable<E> remove(int givenPosition);
 
     void clear();
 
     E replace(int givenPosition, E newEntry);
 
-    E getEntry(int givenPosition);
+    Comparable getEntry(int givenPosition);
 
-    E[] toArray();
+    Comparable[] toArray();
 
     boolean contains(E anEntry);
 
@@ -88,7 +88,7 @@ class MyLList<E> implements ListInterface<E> {
     }
 
     @Override
-    public E remove(int givenPosition) {
+    public Comparable remove(int givenPosition) {
         // Remove an element at a specific position in the list
         if (givenPosition < 1 || givenPosition > size) {
             throw new IndexOutOfBoundsException("Invalid position");
@@ -106,7 +106,7 @@ class MyLList<E> implements ListInterface<E> {
         }
 
         size--;
-        return removedData;
+        return null;
     }
 
     @Override
@@ -131,18 +131,18 @@ class MyLList<E> implements ListInterface<E> {
     }
 
     @Override
-    public E getEntry(int givenPosition) {
+    public Comparable getEntry(int givenPosition) {
         // Get the element at a specific position in the list
         if (givenPosition < 1 || givenPosition > size) {
             throw new IndexOutOfBoundsException("Invalid position");
         }
 
         Node<E> targetNode = getNodeAt(givenPosition);
-        return targetNode.data;
+        return null;
     }
 
     @Override
-    public E[] toArray() {
+    public Comparable[] toArray() {
         // Convert the list to an array
         @SuppressWarnings("unchecked")
         E[] result = (E[]) new Object[size];
@@ -152,7 +152,7 @@ class MyLList<E> implements ListInterface<E> {
             result[index++] = current.data;
             current = current.next;
         }
-        return result;
+        return null;
     }
 
     @Override
@@ -234,6 +234,7 @@ public class Main {
     public static void main(String[] args) {
         // Create an instance of the linked list
         MyLList<String> myList = new MyLList<>();
+        myList.add("My name is Hsin Ying Tsai");
         myList.add("One");
         myList.add("2");
         myList.add("Three");
