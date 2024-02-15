@@ -106,7 +106,7 @@ class MyLList<E> implements ListInterface<E> {
         }
 
         size--;
-        return null;
+        return removedData;
     }
 
     @Override
@@ -138,7 +138,7 @@ class MyLList<E> implements ListInterface<E> {
         }
 
         Node<E> targetNode = getNodeAt(givenPosition);
-        return null;
+        return targetNode.data;
     }
 
     @Override
@@ -152,7 +152,7 @@ class MyLList<E> implements ListInterface<E> {
             result[index++] = current.data;
             current = current.next;
         }
-        return null;
+        return result;
     }
 
     @Override
