@@ -38,7 +38,7 @@ class MyLList<E> implements ListInterface<E> {
         head = null;
         size = 0;
     }
-    
+
     // Node class representing an element in the linked list
     private class Node<T> {
         private T data;
@@ -88,7 +88,7 @@ class MyLList<E> implements ListInterface<E> {
     }
 
     @Override
-    public Comparable remove(int givenPosition) {
+    public Comparable<E> remove(int givenPosition) {
         // Remove an element at a specific position in the list
         if (givenPosition < 1 || givenPosition > size) {
             throw new IndexOutOfBoundsException("Invalid position");
@@ -225,8 +225,23 @@ class MyLList<E> implements ListInterface<E> {
             return data;
         }
     }
-}
 
+    @Override
+    public String toString() {
+        // Convert the list to a string for convenient printing
+        StringBuilder result = new StringBuilder("[");
+        Node<E> current = head;
+        while (current != null) {
+            result.append(current.data);
+            if (current.next != null) {
+                result.append(", ");
+            }
+            current = current.next;
+        }
+        result.append("]");
+        return result.toString();
+    }
+}
 
 // Main class to demonstrate the usage of the linked list
 // E. Main class for testing
@@ -245,6 +260,9 @@ public class Main {
         myList.add("8");
         myList.add("nine");
         myList.add("10");
+
+        // Print the entire list
+        System.out.println(myList);
 
         // Get an iterator for the list
         Iterator<String> iterator = myList.getIterator();
