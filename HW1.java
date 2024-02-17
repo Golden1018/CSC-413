@@ -2,36 +2,45 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 // Interface defining the methods for a generic list
-// C. ListInterface
 interface ListInterface<E> {
+    // Method to add a new element to the end of the list
     void add(E newEntry);
 
+    // Method to add a new element at a specific position in the list
     boolean add(int newPosition, E newEntry);
 
-    Comparable<E> remove(int givenPosition);
+    // Method to remove an element at a specific position in the list
+    E remove(int givenPosition);
 
+    // Method to clear all elements from the list
     void clear();
 
+    // Method to replace the element at a specific position in the list
     E replace(int givenPosition, E newEntry);
 
-    Comparable getEntry(int givenPosition);
+    // Method to get the element at a specific position in the list
+    E getEntry(int givenPosition);
 
+    // Method to convert the list to an array
     Comparable[] toArray();
 
+    // Method to check if the list contains a specific element
     boolean contains(E anEntry);
 
+    // Method to get the number of elements in the list
     int getLength();
 
+    // Method to check if the list is empty
     boolean isEmpty();
 
-    Iterator<E> getIterator();  // D. getIterator() method
+    // Method to get an iterator for iterating through the list
+    Iterator<E> getIterator();
 }
 
 // Implementation of a linked list
-// A. MyLList class representing ADT List
 class MyLList<E> implements ListInterface<E> {
-    private Node<E> head;
-    private int size;
+    private Node<E> head;  // Head of the linked list
+    private int size;      // Size of the linked list
 
     // Constructor for MyLList
     public MyLList() {
@@ -40,10 +49,11 @@ class MyLList<E> implements ListInterface<E> {
     }
 
     // Node class representing an element in the linked list
-    private class Node<T> {
-        private T data;
-        private Node<T> next;
+    class Node<T> {
+        private T data;         // Data of the node
+        private Node<T> next;   // Reference to the next node in the list
 
+        // Constructor for Node
         public Node(T data) {
             this.data = data;
             this.next = null;
@@ -55,8 +65,10 @@ class MyLList<E> implements ListInterface<E> {
         // Add a new element to the end of the list
         Node<E> newNode = new Node<>(newEntry);
         if (isEmpty()) {
+            // If the list is empty, set the new node as the head
             head = newNode;
         } else {
+            // Otherwise, traverse to the end and add the new node
             Node<E> current = head;
             while (current.next != null) {
                 current = current.next;
@@ -70,14 +82,17 @@ class MyLList<E> implements ListInterface<E> {
     public boolean add(int newPosition, E newEntry) {
         // Add a new element at a specific position in the list
         if (newPosition < 1 || newPosition > size + 1) {
+            // Check for valid position, throw exception if invalid
             throw new IndexOutOfBoundsException("Invalid position");
         }
 
         Node<E> newNode = new Node<>(newEntry);
         if (newPosition == 1) {
+            // If adding at the beginning, adjust the head
             newNode.next = head;
             head = newNode;
         } else {
+            // Otherwise, find the previous node and update references
             Node<E> previous = getNodeAt(newPosition - 1);
             newNode.next = previous.next;
             previous.next = newNode;
@@ -88,17 +103,20 @@ class MyLList<E> implements ListInterface<E> {
     }
 
     @Override
-    public Comparable<E> remove(int givenPosition) {
+    public E remove(int givenPosition) {
         // Remove an element at a specific position in the list
         if (givenPosition < 1 || givenPosition > size) {
+            // Check for valid position, throw exception if invalid
             throw new IndexOutOfBoundsException("Invalid position");
         }
 
         E removedData;
         if (givenPosition == 1) {
+            // If removing the first element, update the head
             removedData = head.data;
             head = head.next;
         } else {
+            // Otherwise, find the previous node and update references
             Node<E> previous = getNodeAt(givenPosition - 1);
             Node<E> current = previous.next;
             removedData = current.data;
@@ -120,6 +138,7 @@ class MyLList<E> implements ListInterface<E> {
     public E replace(int givenPosition, E newEntry) {
         // Replace the element at a specific position in the list
         if (givenPosition < 1 || givenPosition > size) {
+            // Check for valid position, throw exception if invalid
             throw new IndexOutOfBoundsException("Invalid position");
         }
 
@@ -131,9 +150,10 @@ class MyLList<E> implements ListInterface<E> {
     }
 
     @Override
-    public Comparable getEntry(int givenPosition) {
+    public E getEntry(int givenPosition) {
         // Get the element at a specific position in the list
         if (givenPosition < 1 || givenPosition > size) {
+            // Check for valid position, throw exception if invalid
             throw new IndexOutOfBoundsException("Invalid position");
         }
 
@@ -189,6 +209,7 @@ class MyLList<E> implements ListInterface<E> {
     // Helper method to get the Node at a specific position
     private Node<E> getNodeAt(int position) {
         if (position < 1 || position > size) {
+            // Check for valid position, throw exception if invalid
             throw new IndexOutOfBoundsException("Invalid position");
         }
 
@@ -200,8 +221,8 @@ class MyLList<E> implements ListInterface<E> {
     }
 
     // Iterator implementation for the linked list
-    private class LinkedListIterator implements Iterator<E> {
-        private Node<E> current;
+    class LinkedListIterator implements Iterator<E> {
+        private Node<E> current;  // Current node in the iteration
 
         // Constructor for the iterator
         public LinkedListIterator() {
@@ -244,11 +265,12 @@ class MyLList<E> implements ListInterface<E> {
 }
 
 // Main class to demonstrate the usage of the linked list
-// E. Main class for testing
-public class Main {
+class Main {
     public static void main(String[] args) {
         // Create an instance of the linked list
         MyLList<String> myList = new MyLList<>();
+
+        // Add elements to the list
         myList.add("My name is Hsin Ying Tsai");
         myList.add("One");
         myList.add("2");
@@ -273,3 +295,4 @@ public class Main {
         }
     }
 }
+
