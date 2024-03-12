@@ -33,6 +33,21 @@ class TransactionData {
     }
 }
 
+interface PriorityComparable extends Comparable<PriorityComparable> {
+    Date getCreationDate();
+    double getCustomPriority();
+
+    @Override
+    default int compareTo(PriorityComparable other) {
+        // First compare by creation date
+        int dateComparison = getCreationDate().compareTo(other.getCreationDate());
+        if (dateComparison != 0) return dateComparison;
+
+        // Then compare by custom priority logic
+        return Double.compare(this.getCustomPriority(), other.getCustomPriority());
+    }
+}
+
 // Transaction class implementing PriorityComparable
 class Transaction implements PriorityComparable {
     private String transactionId;
@@ -41,6 +56,7 @@ class Transaction implements PriorityComparable {
     private Date date;
     private Account associatedAccount;
     private User user; // Reference to the associated User
+    private Date creationDate;
 
     public Transaction(String transactionId, TransactionType transactionType, double amount, Date date,
             Account associatedAccount) {
@@ -48,24 +64,24 @@ class Transaction implements PriorityComparable {
         this.transactionType = transactionType;
         this.amount = amount;
         this.date = (date != null) ? date : new Date(); // Set provided date or current date as default
+        this.creationDate = new Date(); // Use provided date or current date
     }
 
     @Override
     public Date getCreationDate() {
-        // Assuming transaction date represents the creation date
-        return getDate();
+        return creationDate;
     }
 
     @Override
-    public double getPriority() {
-        // Priority based on transaction amount
-        return getAmount();
+    public double getCustomPriority() {
+        // Priority could be transaction amount or other logic
+        return this.amount;
     }
 
     @Override
     public int compareTo(PriorityComparable other) {
         // Implement the comparison logic based on priority
-        return Double.compare(this.getPriority(), other.getPriority());
+        return Double.compare(this.getCustomPriority(), other.getCustomPriority());
     }
 
     // Getters and setters
@@ -124,8 +140,7 @@ class Transaction implements PriorityComparable {
     }
 
     public TransactionData fetchTransactionData() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'fetchTransactionData'");
+        return new TransactionData(this.transactionId, this.transactionType, this.amount);
     }
 
 }

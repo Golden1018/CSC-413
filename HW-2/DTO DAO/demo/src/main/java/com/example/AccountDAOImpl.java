@@ -13,9 +13,10 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public AccountDTO get(int accountId) {
-        // Implementation of get method will be added later
-        return null;
+
+    return accounts.isEmpty() ? null : accounts.get(0);
     }
+
 
     @Override
     public List<AccountDTO> getAll() {

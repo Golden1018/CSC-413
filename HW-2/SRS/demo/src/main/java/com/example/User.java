@@ -40,8 +40,17 @@ class UserData {
 // balance
 interface PriorityComparable extends Comparable<PriorityComparable> {
     Date getCreationDate();
+    double getCustomPriority();
 
-    double getPriority();
+    @Override
+    default int compareTo(PriorityComparable other) {
+        // First compare by creation date
+        int dateComparison = getCreationDate().compareTo(other.getCreationDate());
+        if (dateComparison != 0) return dateComparison;
+
+        // Then compare by custom priority logic
+        return Double.compare(this.getCustomPriority(), other.getCustomPriority());
+    }
 }
 
 // User class implementing PriorityComparable
@@ -52,6 +61,8 @@ class User implements PriorityComparable {
     private UserType userType;
     private List<Account> accounts;
     private List<Transaction> transactions;
+    private Date creationDate;
+
 
     public User(String userId, String username, String password, UserType userType) {
         this.userId = userId;
@@ -60,19 +71,18 @@ class User implements PriorityComparable {
         this.userType = userType;
         this.accounts = new ArrayList<>();
         this.transactions = new ArrayList<>();
+        this.creationDate = new Date(); // Capture the creation time
     }
 
     @Override
     public Date getCreationDate() {
-        // You may want to adjust this based on your actual implementation
-        return new Date();
+        return creationDate;
     }
 
     @Override
-    public double getPriority() {
-        // Priority based on date of creation
-        Date creationDate = getCreationDate();
-        return (creationDate != null) ? creationDate.getTime() : 0;
+    public double getCustomPriority() {
+        // For User, prioritize based on creation date only
+        return 0; // This value is ignored due to the logic in compareTo()
     }
 
     // Getters and setters
@@ -112,7 +122,7 @@ class User implements PriorityComparable {
     @Override
     public int compareTo(PriorityComparable other) {
         // Implement the comparison logic based on priority
-        return Double.compare(this.getPriority(), other.getPriority());
+        return Double.compare(this.getCustomPriority(), other.getCustomPriority());
     }
 
     @Override

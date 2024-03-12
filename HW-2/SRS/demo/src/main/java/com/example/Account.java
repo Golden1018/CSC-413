@@ -14,6 +14,21 @@ enum AccountStatus {
     ACTIVE, INACTIVE
 }
 
+interface PriorityComparable extends Comparable<PriorityComparable> {
+    Date getCreationDate();
+    double getCustomPriority();
+
+    @Override
+    default int compareTo(PriorityComparable other) {
+        // First compare by creation date
+        int dateComparison = getCreationDate().compareTo(other.getCreationDate());
+        if (dateComparison != 0) return dateComparison;
+
+        // Then compare by custom priority logic
+        return Double.compare(this.getCustomPriority(), other.getCustomPriority());
+    }
+}
+
 // DTO for representing Account data
 class AccountData {
     private String accountNumber;
@@ -53,6 +68,7 @@ class Account implements PriorityComparable {
     private double balance;
     private AccountStatus status;
     private User user; // Reference to the associated User
+    private Date creationDate;
     private List<Transaction> transactions; // List to store associated transactions
 
     public Account(String accountNumber, AccountType accountType, double balance, AccountStatus status) {
@@ -61,18 +77,19 @@ class Account implements PriorityComparable {
         this.balance = balance;
         this.status = status;
         this.transactions = new ArrayList<>();
+        this.creationDate = new Date(); // Capture the creation time
     }
 
     @Override
-    public double getPriority() {
+    public double getCustomPriority() {
         // Priority based on account balance
-        return getBalance();
+        return this.balance;
     }
 
     @Override
     public int compareTo(PriorityComparable other) {
         // Implement the comparison logic based on priority
-        return Double.compare(this.getPriority(), other.getPriority());
+        return Double.compare(this.getCustomPriority(), other.getCustomPriority());
     }
 
     // Getters and setters
@@ -110,8 +127,7 @@ class Account implements PriorityComparable {
 
     @Override
     public Date getCreationDate() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCreationDate'");
+        return creationDate;
     }
 
     @Override
@@ -139,7 +155,6 @@ class Account implements PriorityComparable {
     }
 
     public AccountData fetchAccountData() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'fetchAccountData'");
+        return new AccountData(this.accountNumber, this.accountType, this.balance, this.status);
     }
 }

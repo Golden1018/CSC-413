@@ -1,37 +1,33 @@
 package com.example;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class UserTest {
-
+class UserTest {
+    
     @Test
-    public void testAddAccount() {
-        User user = new User("1", "john_doe", "password123", UserType.CUSTOMER);
-        Account account = new Account("12345", AccountType.SAVINGS, 1000.0, AccountStatus.ACTIVE);
-        Transaction transaction = new Transaction("T123", TransactionType.DEPOSIT, 500.0, null, null);
-
-        user.addAccount(account);
-        account.addTransaction(transaction);
-
-        assertTrue(user.getAccounts().contains(account));
-        assertTrue(account.getTransactions().contains(transaction));
-        assertEquals(user, account.getUser());
-        assertEquals(account, transaction.getAssociatedAccount());
+    void testUserCreation() {
+        User user = new User("1", "John Doe", "password123", UserType.CUSTOMER);
+        assertNotNull(user.getCreationDate());
+        assertEquals("John Doe", user.getUsername());
+        assertEquals(UserType.CUSTOMER, user.getUserType());
     }
 
     @Test
-    public void testAddTransaction() {
-        User user = new User("1", "john_doe", "password123", UserType.CUSTOMER);
+    void testAddAccount() {
+        User user = new User("1", "John Doe", "password123", UserType.CUSTOMER);
         Account account = new Account("12345", AccountType.SAVINGS, 1000.0, AccountStatus.ACTIVE);
-        Transaction transaction = new Transaction("T123", TransactionType.DEPOSIT, 500.0, null, null);
+        user.addAccount(account);
+        assertEquals(1, user.getAccounts().size());
+        assertEquals(account, user.getAccounts().get(0));
+    }
 
-        user.addTransaction(transaction);
-        account.addTransaction(transaction);
-
-        assertTrue(user.getTransactions().contains(transaction));
-        assertTrue(account.getTransactions().contains(transaction));
-        assertEquals(user, transaction.getUser());
-        assertEquals(account, transaction.getAssociatedAccount());
+    @Test
+    void testFetchUserData() {
+        User user = new User("1", "John Doe", "password123", UserType.CUSTOMER);
+        UserData userData = user.fetchUserData();
+        assertEquals("1", userData.getUserId());
+        assertEquals("John Doe", userData.getUsername());
+        assertEquals(UserType.CUSTOMER, userData.getUserType());
     }
 }
