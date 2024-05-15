@@ -23,6 +23,7 @@ public class CustomerSearch extends javax.swing.JFrame {
      */
     public CustomerSearch() {
         initComponents();
+        setVisible(true);
     }
 
     // Add these declarations with your other variable declarations

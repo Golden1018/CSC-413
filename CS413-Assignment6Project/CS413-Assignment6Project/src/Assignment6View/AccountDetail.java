@@ -11,6 +11,11 @@ import Assignment6Model.BankAccount;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 import javax.swing.JFrame;
 
 import javax.swing.JScrollPane;
@@ -23,34 +28,62 @@ import javax.swing.SwingUtilities;
  * @author karunmehta
  */
 public class AccountDetail extends javax.swing.JFrame {
-
     private JList<BankAccount> accountList;
-   
-    /**
-     * Creates new form AccountDetail
-     */
+
     public AccountDetail() {
         initComponents();
+        setUpTransactionButtonListener();
     }
 
-    public void setAccountDetails(BankAccount account) {
-        jTextField1.setText(account.getCustomerName());
-        jTextField2.setText(account.getAccountType());  // Ensure this is correct
-        jTextField4.setText(account.getCreateDate().toString());
-        jTextField3.setText(String.valueOf(account.getBalance()));
+    private void setUpTransactionButtonListener() {
+        jButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openTransactionSummary();
+            }
+        });
+    }
+
+    private void openTransactionSummary() {
+        TransactionSummary transactionSummary = new TransactionSummary();
+        transactionSummary.setVisible(true);
+    }
+    
+    
+    
+    
+
+    private void openTransactionPanel() {
+        BankAccount selectedAccount = accountList.getSelectedValue();
+        if (selectedAccount != null) {
+            // Assuming BankAccount class has methods getAccountId and getCustomerName
+            String accountId = selectedAccount.getAccountNumber();
+            String customerName = selectedAccount.getCustomerName();
+            
+            TransactionSummary transactionSummary = new TransactionSummary(accountId, customerName);
+            transactionSummary.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an account to view transactions.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
 
-    private void showDetailsActionPerformed(ActionEvent e) {
-    // Assuming accountList is a JList or similar component
-    BankAccount selectedAccount = accountList.getSelectedValue();
-    if (selectedAccount != null) {
-        AccountDetail detailFrame = new AccountDetail();
-        detailFrame.setAccountDetails(selectedAccount);  // Ensure this method is properly implemented in AccountDetail
-        detailFrame.setVisible(true);
-    } else {
-        JOptionPane.showMessageDialog(this, "Please select an account to view details.", "Error", JOptionPane.ERROR_MESSAGE);
+    public void setAccountDetails(BankAccount account) {
+        jTextField1.setText(account.getCustomerName());
+        jTextField2.setText(account.getAccountType());
+        jTextField4.setText(account.getCreateDate().toString());
+        jTextField3.setText(String.valueOf(account.getBalance()));
     }
+
+    private void showDetailsActionPerformed(ActionEvent e) {
+        BankAccount selectedAccount = accountList.getSelectedValue();
+        if (selectedAccount != null) {
+            AccountDetail detailFrame = new AccountDetail();
+            detailFrame.setAccountDetails(selectedAccount);
+            detailFrame.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an account to view details.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     
@@ -65,7 +98,14 @@ public class AccountDetail extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
         
+        accountList = new JList<>();
+        // Assuming BankAccount is a custom class that has a proper toString() method
+        DefaultListModel<BankAccount> model = new DefaultListModel<>();
+        // Add items to model if necessary or it could be done elsewhere in your code
+        accountList.setModel(model);
+
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();

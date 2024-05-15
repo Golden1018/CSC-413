@@ -159,8 +159,9 @@ public class CustomerDetail extends javax.swing.JFrame {
                 updateAddressActionPerformed(evt);
             }
         });
+        
 
-        saveButton.setText("Save");
+        saveButton.setText("Update Customer");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveActionPerformed(evt);
@@ -279,10 +280,10 @@ public class CustomerDetail extends javax.swing.JFrame {
     }
 
     private void updateAddressActionPerformed(java.awt.event.ActionEvent evt) {
-    // Enables the address text field for editing
-    JOptionPane.showMessageDialog(this, "Update Success", "Information", JOptionPane.INFORMATION_MESSAGE);
-    jTextField5.setEditable(false); // Focus on the address field to prompt the user to edit
+        // This assumes that you have modified the CustomerAddress class to accept a BankCustomer object.
+        new CustomerAddress(customer).setVisible(true);
     }
+    
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {
         try {

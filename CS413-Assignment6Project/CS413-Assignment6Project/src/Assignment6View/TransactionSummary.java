@@ -4,17 +4,32 @@
  */
 package Assignment6View;
 
+import javax.swing.JTextField;
+
 /**
  *
  * @author karunmehta
  */
 public class TransactionSummary extends javax.swing.JFrame {
 
+    private JTextField txtAccountId;
+    private JTextField txtCustomerName;
     /**
      * Creates new form TransactionSummary
      */
     public TransactionSummary() {
         initComponents();
+    }
+
+    // Constructor that accepts account ID and customer name
+    public TransactionSummary(String accountId, String customerName) {
+        this(); // Call the default constructor to initialize components
+        setAccountDetails(accountId, customerName);
+    }
+
+    private void setAccountDetails(String accountId, String customerName) {
+        txtAccountId.setText(accountId);
+        txtCustomerName.setText(customerName);
     }
 
     /**
@@ -41,7 +56,7 @@ public class TransactionSummary extends javax.swing.JFrame {
         jLabel1.setText("Accout ID:");
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { "2024-02-20 10:01:00, deposit, 500, Rent, 1" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -49,11 +64,11 @@ public class TransactionSummary extends javax.swing.JFrame {
 
         jLabel2.setText("Transactions:");
 
-        jTextField1.setText("acctID");
+        jTextField1.setText("1");
 
         jLabel3.setText("Customer Name:");
 
-        jTextField2.setText("CustName");
+        jTextField2.setText("John Doe");
 
         jButton1.setText("Done");
 

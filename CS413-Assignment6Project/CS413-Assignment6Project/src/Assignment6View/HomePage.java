@@ -17,6 +17,9 @@ public class HomePage extends JFrame implements ActionListener {
     JButton jbSearch, jbAdd, jbRemove, jbUpdate;
     
     HomePage() {
+
+
+
     
         setLayout(null);
         
@@ -50,15 +53,12 @@ public class HomePage extends JFrame implements ActionListener {
     }
     
     public void actionPerformed(ActionEvent ae) {
-        
-        if((ae.getSource()) == jbAdd) { 
-                new CustomerFrame();
-        } else if((ae.getSource()) == jbSearch) {
+        if ((ae.getSource()) == jbSearch) {
             new CustomerSearch();
             this.setVisible(true);
         }
-        
     }
+    
     
     //This main method is not needed, unless you want to run this class by itself from your IDE to validate its look'n feel
     //This frame(window) will be called as a result of an action(click, select etc) from another widget on on another winhow during the GUI workflow

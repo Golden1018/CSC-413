@@ -43,6 +43,8 @@ public class BankAccountTransaction implements TransactionInterface {
         destinationAccount = target;
         
     }   
+
+    
     
     // Setters and getters for the FriscoCommunityBankAccount object
     

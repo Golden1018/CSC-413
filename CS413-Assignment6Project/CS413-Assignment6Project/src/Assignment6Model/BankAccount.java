@@ -38,10 +38,23 @@ public abstract class BankAccount implements Comparable<BankAccount> {
         return accountType;
     }
 
+    public String getAccountNumber() {
+        return this.accountNumber;
+    }
+
     public void setAccountType(String accountType) {
         this.accountType = accountType;
     }
     
+    public BankAccount(String accountNumber, double balance, String accountType, String customerName, int custId) {
+    this.accountNumber = accountNumber;
+    this.balance = balance;
+    this.accountType = accountType;
+    this.customerName = customerName;
+    this.custId = custId;  // Ensure this line is added
+    this.createDate = LocalDate.now();
+}
+
 
     public BankAccount(String accountNumber, double balance, String accountType, String customerName) {
         this.accountNumber = accountNumber;
@@ -70,10 +83,11 @@ public abstract class BankAccount implements Comparable<BankAccount> {
     }
 
     
-    
-    public String getAccountNumber() {
-        return accountNumber;
+    public int getCustId() {
+        return this.custId;
     }
+    
+  
 
     public double getBalance() {
         return balance;
@@ -212,6 +226,11 @@ public abstract class BankAccount implements Comparable<BankAccount> {
         this.custId = custId;
     }
 
+    
+    public int getId() {
+        return this.accountNum;
+    }
+    
     
 
     public void setCreateDate(LocalDate createDate) {

@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 import Assignment6Controller.AccountDAO;
 import Assignment6Model.BankAccount;
@@ -49,14 +50,21 @@ public class AccountList extends JFrame {
         showDetailButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 BankAccount selectedAccount = accountList.getSelectedValue();
+                System.out.println("ActionEvent: " + e);
+                System.out.println("Selected Account: " + selectedAccount);
                 if (selectedAccount != null) {
                     AccountDetail detailFrame = new AccountDetail();
                     detailFrame.setAccountDetails(selectedAccount);
                     detailFrame.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please select an account to view transactions.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
         
+        
+        
+        accountList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         this.setLayout(new java.awt.BorderLayout());
         this.add(scrollPane, java.awt.BorderLayout.CENTER);

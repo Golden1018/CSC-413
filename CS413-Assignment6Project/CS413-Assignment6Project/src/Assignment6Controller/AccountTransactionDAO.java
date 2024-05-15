@@ -5,12 +5,14 @@
 package Assignment6Controller;
 
 import Assignment6Model.*;
-import Assignment6Model.BankCustomer;
+
 import java.sql.*;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -18,15 +20,23 @@ import javax.swing.JOptionPane;
  */
 
 public class AccountTransactionDAO implements DAOInterface<BankAccountTransaction> {
-
-    static Connection connection = null;
-    PreparedStatement pStatement;
-    ResultSet result;
+    private static AccountTransactionDAO instance;
+    private static Connection connection;
+    private PreparedStatement pStatement;
+    private ResultSet result;
     
-    AccountTransactionDAO() {
+    
+    public AccountTransactionDAO() {
 
             connection = DataConnection.getDBConnection();      
 
+    }
+
+    public static AccountTransactionDAO getInstance() {
+        if (instance == null) {
+            instance = new AccountTransactionDAO();
+        }
+        return instance;
     }
        
     
@@ -93,6 +103,36 @@ public class AccountTransactionDAO implements DAOInterface<BankAccountTransactio
         
         return -1;
     }
+
+    public List<BankAccountTransaction> findTransactions(String accountId) throws SQLException {
+        List<BankAccountTransaction> transactions = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM account_transaction WHERE acct_id = ?";
+            try (Connection connection = DriverManager.getConnection("your-db-url", "username", "password");
+                 PreparedStatement pStatement = connection.prepareStatement(query)) {
+                pStatement.setString(1, accountId);
+                try (ResultSet resultSet = pStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        BankAccountTransaction transaction = new BankAccountTransaction();
+                        transaction.setCreateDate(resultSet.getTimestamp("create_date"));
+                        transaction.setType(resultSet.getString("tran_type"));
+                        transaction.setAmount(resultSet.getDouble("amount"));
+                        transaction.setDescription(resultSet.getString("summary"));
+                        transaction.setID(resultSet.getInt("acct_id"));
+                        transactions.add(transaction);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching transactions: " + e.getMessage());
+            // Optionally log the error or handle it as needed
+        }
+        return transactions; // Could be empty if there was an exception
+    }
+    
+    
+    
+
     
 }
 
